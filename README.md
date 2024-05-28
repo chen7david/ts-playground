@@ -5,12 +5,12 @@ Basic typescript development enviroment
 ```cmd
 git checkout main
 
-git checkout -b 项目名字
+git checkout -b david-project
 ```
 
 ### Install new packages
 ```cmd
-npm i package的名字
+npm i express
 或者
-npm i -D package的名字
+npm i -D nodemon
 ```

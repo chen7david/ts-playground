@@ -10,6 +10,12 @@ Note to students: You only work on files in the `src/` folder!
 git clone https://github.com/chen7david/ts-playground.git
 ```
 
+### Download packages
+
+```cmd
+npm i 
+```
+
 ### Start a new playground
 
 ```cmd

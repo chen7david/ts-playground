@@ -4,6 +4,12 @@ Basic typescript development enviroment
 
 Note to students: You only work on files in the `src/` folder!
 
+### Download project
+
+```cmd
+git clone https://github.com/chen7david/ts-playground.git
+```
+
 ### Start a new playground
 
 ```cmd

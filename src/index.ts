@@ -28,15 +28,11 @@ import { userRepository } from './repositories/user.repository'
 // const user = genNewUserModel()
 
 const main = async () => {
-  const item = await userRepository.find(
+  const item = await userRepository.updateOneByPK(
+    1,
     {
-      limit: 2,
-      includeDeleted: true,
-      sortBy: [{ name: 'created_at', order: 'DESC' }],
-      filterBy: [
-        { name: 'username', value: 'da' },
-        { name: 'email', value: 'cl' },
-      ],
+      password: 'hello!',
+      imageUrl: 'watch this!',
     },
     {
       returnModel: UserModel,

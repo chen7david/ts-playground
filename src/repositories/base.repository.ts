@@ -78,7 +78,20 @@ export class BaseRepository<T> {
     }
     if (filter) this.buildFilterQuery(query, filter)
     const result = await this.trx(query, options?.trx)
-    return result as InferZodSchema<U>[]
+    return result
+  }
+
+  async findOneByPK<U extends ZodObject<any>>(
+    id: number,
+    options?: IDbQueryOption<U>,
+  ): Promise<InferZodSchema<U> | undefined> {
+    const query = this.table().where(this.pk, id).first()
+    if (options?.returnModel) {
+      const aliasSelect = this.getAliasedSelect(options.returnModel)
+      query.select(aliasSelect)
+    }
+    const result = await this.trx(query, options?.trx)
+    return result
   }
 
   async create<U extends ZodObject<any>>(
@@ -97,5 +110,23 @@ export class BaseRepository<T> {
 
     const [result] = await this.trx(query, options?.trx)
     return result as InferZodSchema<U>
+  }
+
+  async updateOneByPK<U extends ZodObject<any>>(
+    id: number,
+    partialItem: Partial<T>,
+    options?: IDbQueryOption<U>,
+  ): Promise<InferZodSchema<U> | undefined> {
+    const partialItemWithSnakeCaseKeys = this.renameKeysToSnakeCase(partialItem)
+    const query = this.table()
+      .update(partialItemWithSnakeCaseKeys)
+      .where(this.pk, id)
+    // .first()
+    if (options?.returnModel) {
+      const aliasSelect = this.getAliasedSelect(options.returnModel)
+      query.returning(aliasSelect)
+    }
+    const [result] = await this.trx(query, options?.trx)
+    return result
   }
 }

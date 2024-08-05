@@ -1,6 +1,8 @@
 import { z } from 'zod'
 
 export const QueryParamFilter = z.object({
+  limit: z.coerce.number().optional(),
+  cursor: z.string().optional(),
   filterBy: z
     .array(
       z.object({
@@ -9,15 +11,20 @@ export const QueryParamFilter = z.object({
       }),
     )
     .optional(),
-  limit: z.coerce.number().optional(),
-  offset: z.coerce.number().optional(),
   sortBy: z
     .array(
       z.object({
         name: z.string(),
-        direction: z.enum(['ACS', 'DESC']),
+        order: z.enum(['ACS', 'DESC']),
       }),
     )
     .optional(),
   includeDeleted: z.coerce.boolean().optional(),
 })
+
+export type IQueryParamFilter = z.infer<typeof QueryParamFilter>
+
+export const defaultQueryParamFilter = {
+  limit: 10,
+  sortBy: [{ name: 'created_by', order: 'ACS' }],
+}

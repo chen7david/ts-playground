@@ -28,16 +28,9 @@ import { userRepository } from './repositories/user.repository'
 // const user = genNewUserModel()
 
 const main = async () => {
-  const item = await userRepository.updateOneByPK(
-    1,
-    {
-      password: 'hello!',
-      imageUrl: 'watch this!',
-    },
-    {
-      returnModel: UserModel,
-    },
-  )
+  const item = await userRepository.deleteOneByPK(2, {
+    returnModel: UserModel,
+  })
   console.log(item)
 }
 main()

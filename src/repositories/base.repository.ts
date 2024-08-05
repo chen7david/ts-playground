@@ -1,10 +1,9 @@
-import { Knex, QueryBuilder } from 'knex'
+import { Knex } from 'knex'
 import {
   TablePK,
   TableName,
   ITableEntity,
   IRepositoryConstructor,
-  // IDbQueryOption,
   IObject,
   InferZodSchema,
   IDbQueryOption,
@@ -128,5 +127,13 @@ export class BaseRepository<T> {
     }
     const [result] = await this.trx(query, options?.trx)
     return result
+  }
+
+  async deleteOneByPK(
+    id: number,
+    options?: IDbQueryOption<any>,
+  ): Promise<boolean> {
+    const query = this.table().where(this.pk, id).delete()
+    return (await this.trx(query, options?.trx)) > 0
   }
 }

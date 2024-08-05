@@ -1,4 +1,5 @@
-import { z } from 'zod'
+import { Knex } from 'knex'
+import { z, ZodObject } from 'zod'
 
 export enum TableName {
   Users = 'users',
@@ -25,3 +26,17 @@ export const TableEntity = z.object({
 })
 
 export type ITableEntity = z.infer<typeof TableEntity>
+
+export type IRepositoryConstructor = {
+  pk: TablePK
+  tableName: TableName
+}
+
+export type IDbQueryOption<T extends ZodObject<any> = ZodObject<any>> = {
+  returnModel?: T
+  trx?: Knex.Transaction
+  includeDeleted?: boolean
+}
+
+export type IObject = { [key: string]: any }
+export type InferZodSchema<T extends ZodObject<any>> = z.infer<T>

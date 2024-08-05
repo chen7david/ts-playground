@@ -7,25 +7,43 @@ export const UserEntity = TableEntity.extend({
   email: z.string(),
   password: z.string(),
   imageUrl: z.string(),
-  activatedAt: z.date(),
+  activatedAt: z.date().nullable(),
 })
-
-export const CreateUserDto = UserEntity.omit({
-  id: true,
-  xid: true,
-  activatedAt: true,
-  deletedAt: true,
-  createdAt: true,
-  updatedAt: true,
-})
-
-export const UpdateUserDto = CreateUserDto.omit({ password: true }).partial()
 
 export const User = UserEntity.omit({
   password: true,
 })
 
-export type IUser = z.infer<typeof User>
+export const UserModel = UserEntity.omit({})
+
+export const NewUserModel = UserEntity.omit({
+  id: true,
+  deletedAt: true,
+  createdAt: true,
+  updatedAt: true,
+})
+
+export const NewUserDto = NewUserModel.omit({
+  xid: true,
+})
+
+export const EditUserModel = UserEntity.omit({
+  id: true,
+  deletedAt: true,
+  createdAt: true,
+  updatedAt: true,
+}).partial()
+
+export const EditUserDto = EditUserModel.omit({
+  password: true,
+  username: true,
+  activatedAt: true,
+})
+
 export type IUserEntity = z.infer<typeof UserEntity>
-export type ICreateUserDto = z.infer<typeof CreateUserDto>
-export type IUpdateUserDto = z.infer<typeof UpdateUserDto>
+export type IUserModel = z.infer<typeof UserModel>
+export type INewUserDto = z.infer<typeof NewUserDto>
+export type INewUserModel = z.infer<typeof NewUserModel>
+export type IEditUserDto = z.infer<typeof EditUserDto>
+export type IEditUserModel = z.infer<typeof EditUserModel>
+export type IUser = z.infer<typeof User>

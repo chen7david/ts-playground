@@ -1,5 +1,4 @@
 import fs from 'fs'
-import path from 'path'
 import prettier, { RequiredOptions } from 'prettier'
 
 // Predefined Prettier configuration
@@ -12,7 +11,7 @@ const prettierConfig: Partial<RequiredOptions> = {
 }
 
 // Function to read, replace, format, and write the file
-async function copyAndReplace(
+export async function copyAndReplace(
   sourceFilePath: string,
   destinationFilePath: string,
   replacements: Record<string, string>,
@@ -44,16 +43,3 @@ async function copyAndReplace(
     console.error('Error processing the file:', error)
   }
 }
-
-// Define the source and destination file paths
-const sourceFilePath = path.join(__dirname, '/templates/user.model.ts')
-const destinationFilePath = path.resolve(__dirname, 'user.model.ts')
-console.log({ sourceFilePath, destinationFilePath })
-
-// Define the replacements as key-value pairs
-const replacements: Record<string, string> = {
-  '{{ModelName}}': 'User',
-}
-
-// Execute the copy and replace function
-copyAndReplace(sourceFilePath, destinationFilePath, replacements)

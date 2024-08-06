@@ -10,5 +10,5 @@
     "rootDir": "./src"
   },
   "include": ["src/**/*.ts", "tests/**/*.ts"],
-  "exclude": ["node_modules", "templates"]
+  "exclude": ["node_modules"]
 }

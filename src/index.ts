@@ -1,59 +1,36 @@
-import fs from 'fs'
-import path from 'path'
-import prettier, { RequiredOptions } from 'prettier'
-
-// Predefined Prettier configuration
-const prettierConfig: Partial<RequiredOptions> = {
-  singleQuote: true,
-  trailingComma: 'all',
-  parser: 'typescript',
-  semi: false,
-  tabWidth: 2,
-}
-
-// Function to read, replace, format, and write the file
-async function copyAndReplace(
-  sourceFilePath: string,
-  destinationFilePath: string,
-  replacements: Record<string, string>,
-) {
-  try {
-    // Read the original file content
-    const fileContent = fs.readFileSync(sourceFilePath, 'utf-8')
-
-    // Replace the values as specified in the replacements object
-    let modifiedContent = fileContent
-    for (const [key, value] of Object.entries(replacements)) {
-      const regex = new RegExp(key, 'g')
-      modifiedContent = modifiedContent.replace(regex, value)
+function dynamicPick<T extends object, K extends keyof T>(
+  obj: T,
+  keys: K[],
+): Pick<T, K> {
+  const result = {} as Pick<T, K>
+  keys.forEach((key) => {
+    if (key in obj) {
+      result[key] = obj[key]
     }
-
-    // Format the modified content using Prettier
-    const formattedContent = await prettier.format(
-      modifiedContent,
-      prettierConfig,
-    )
-
-    // Write the modified and formatted content to the new file
-    fs.writeFileSync(destinationFilePath, formattedContent, 'utf-8')
-
-    console.log(
-      `File copied and modified successfully to ${destinationFilePath}`,
-    )
-  } catch (error) {
-    console.error('Error processing the file:', error)
-  }
+  })
+  return result
 }
 
-// Define the source and destination file paths
-const sourceFilePath = path.join(__dirname, '/templates/user.model.ts')
-const destinationFilePath = path.resolve(__dirname, 'user.model.ts')
-console.log({ sourceFilePath, destinationFilePath })
-
-// Define the replacements as key-value pairs
-const replacements: Record<string, string> = {
-  '{{ModelName}}': 'User',
+interface IUserEntity {
+  id: number
+  name: string
+  email: string
+  age: number
 }
 
-// Execute the copy and replace function
-copyAndReplace(sourceFilePath, destinationFilePath, replacements)
+const user: IUserEntity = {
+  id: 1,
+  name: 'John Doe',
+  email: 'john.doe@example.com',
+  age: 30,
+}
+
+const userKeys = {
+  id: 1,
+  age: 30,
+}
+
+const compileTimeKeys = Object.keys(userKeys)
+
+const pickedUser = dynamicPick(user, ['name', 'email', 'age'])
+console.log(pickedUser) // Output: { name: 'John Doe', email: 'john.doe@example.com' }
